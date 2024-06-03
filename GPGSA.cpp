@@ -1,0 +1,115 @@
+#include <iostream>
+#include "parse.h"
+
+
+#include "GPGSA.h"
+
+
+
+
+#define ARRAY_LENGTH(a) (sizeof a / sizeof (a[0]))
+
+std::string GPGSA::printMe()
+{
+	std::string retVal;
+
+	int i = 1;
+	printf("GPGSA:\r\n");
+	printf("Mode: %c\r\n", mode); // M = manual (forced 2D or 3D), A = automatic 
+	printf("Fix Type: %c\r\n", fixtype); // 1 = no fix, 2 = 2D, 3 = 3D 
+	printf("SAT ID %02d: %d\r\n", i++, satID_00);
+	printf("SAT ID %02d: %d\r\n", i++, satID_01);
+	printf("SAT ID %02d: %d\r\n", i++, satID_02);
+	printf("SAT ID %02d: %d\r\n", i++, satID_03);
+	printf("SAT ID %02d: %d\r\n", i++, satID_04);
+	printf("SAT ID %02d: %d\r\n", i++, satID_05);
+	printf("SAT ID %02d: %d\r\n", i++, satID_06);
+	printf("SAT ID %02d: %d\r\n", i++, satID_07);
+	printf("SAT ID %02d: %d\r\n", i++, satID_08);
+	printf("SAT ID %02d: %d\r\n", i++, satID_09);
+	printf("SAT ID %02d: %d\r\n", i++, satID_10);
+	printf("SAT ID %02d: %d\r\n", i++, satID_11);
+
+	printf("Position DOP: %f\r\n", pdop);
+	printf("Horizontal DOP: %f\r\n", hdop);
+	printf("Vertical DOP: %f\r\n", vdop);
+	return retVal;
+}
+
+NMEA_Sentence* GPGSA::parse(char* sentence, int length)
+{
+	type = NMEA_GPGSA;
+	NMEA_Sentence::parse(sentence, length);
+	return this;
+}
+
+
+int GPGSA::_parse(char* value, int val_index)
+{
+	switch (val_index) {
+	case NMEA_GPGSA_MODE:
+		mode = *value;
+		if (('M' != toupper( mode)) && ('A' != toupper( mode))) {
+			return -1;
+		}
+		break;
+	case NMEA_GPGSA_FIXTYPE:
+		fixtype = strtol(value, NULL, 10);
+		if ((1 !=  fixtype) && (2 !=  fixtype) && (3 !=  fixtype)) {
+			return -1;
+		}
+		break;
+	case NMEA_GPGSA_SATID_00:
+		 satID_00 = strtol(value, NULL, 10);
+		break;
+	case NMEA_GPGSA_SATID_01:
+		 satID_01 = strtol(value, NULL, 10);
+		break;
+	case NMEA_GPGSA_SATID_02:
+		 satID_02 = strtol(value, NULL, 10);
+		break;
+	case NMEA_GPGSA_SATID_03:
+		 satID_03 = strtol(value, NULL, 10);
+		break;
+	case NMEA_GPGSA_SATID_04:
+		 satID_04 = strtol(value, NULL, 10);
+		break;
+	case NMEA_GPGSA_SATID_05:
+		 satID_05 = strtol(value, NULL, 10);
+		break;
+	case NMEA_GPGSA_SATID_06:
+		 satID_06 = strtol(value, NULL, 10);
+		break;
+	case NMEA_GPGSA_SATID_07:
+		 satID_07 = strtol(value, NULL, 10);
+		break;
+	case NMEA_GPGSA_SATID_08:
+		 satID_08 = strtol(value, NULL, 10);
+		break;
+	case NMEA_GPGSA_SATID_09:
+		 satID_09 = strtol(value, NULL, 10);
+		break;
+	case NMEA_GPGSA_SATID_10:
+		 satID_10 = strtol(value, NULL, 10);
+		break;
+	case NMEA_GPGSA_SATID_11:
+		 satID_11 = strtol(value, NULL, 10);
+		break;
+	case NMEA_GPGSA_PDOP:
+		 pdop = strtod(value, NULL);
+		break;
+	case NMEA_GPGSA_HDOP:
+		 hdop = strtod(value, NULL);
+		break;
+	case NMEA_GPGSA_VDOP:
+		 vdop = strtod(value, NULL);
+		break;
+	default:
+		break;
+	}
+
+	return 0;
+}
+
+
+

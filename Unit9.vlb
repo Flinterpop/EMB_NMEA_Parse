@@ -1,0 +1,16 @@
+﻿[TM_Debug]
+Coordinates=100,10,78,58
+
+[Button1]
+Coordinates=188,10,59,58
+
+[]
+Coordinates=10,78,76,36
+Visible=True
+
+[BindingsList1]
+Coordinates=378,1,91,36
+
+[StringGrid1]
+Coordinates=0,0,80,58
+

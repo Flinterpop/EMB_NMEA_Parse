@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2024/05/30 21:45:41.000.531,=C:\Users\Brad\Documents\Embarcadero\Studio\Projects\Unit9.cpp</Transaction>
+    <Transaction>2024/05/30 21:45:41.000.493,=C:\Users\Brad\Documents\Embarcadero\Studio\Projects\Project8PCH1.h</Transaction>
+    <Transaction>2024/05/30 21:51:49.000.239,C:\Users\Brad\Documents\Embarcadero\Studio\Projects\Project8.cbproj=C:\Users\Brad\Documents\Embarcadero\Studio\Projects\Project8.cbproj</Transaction>
+    <Transaction>2024/05/30 22:02:19.043,=C:\source\test\EMB_NMEAParse\GPGGA.cpp</Transaction>
+    <Transaction>2024/05/30 22:02:19.071,=C:\source\test\EMB_NMEAParse\GPGLL.cpp</Transaction>
+    <Transaction>2024/05/30 22:02:19.110,=C:\source\test\EMB_NMEAParse\GPGSA.cpp</Transaction>
+    <Transaction>2024/05/30 22:02:19.123,=C:\source\test\EMB_NMEAParse\GPGSV.cpp</Transaction>
+    <Transaction>2024/05/30 22:02:19.157,=C:\source\test\EMB_NMEAParse\GPRMC.cpp</Transaction>
+    <Transaction>2024/05/30 22:02:19.170,=C:\source\test\EMB_NMEAParse\GPTXT.cpp</Transaction>
+    <Transaction>2024/05/30 22:02:19.203,=C:\source\test\EMB_NMEAParse\GPVTG.cpp</Transaction>
+    <Transaction>2024/05/30 22:02:19.220,=C:\source\test\EMB_NMEAParse\nmea.cpp</Transaction>
+    <Transaction>2024/05/30 22:02:19.233,=C:\source\test\EMB_NMEAParse\NMEA_Sentence.cpp</Transaction>
+    <Transaction>2024/05/30 22:02:19.268,=C:\source\test\EMB_NMEAParse\parse.cpp</Transaction>
+    <Transaction>2024/05/30 22:02:19.281,=C:\source\test\EMB_NMEAParse\SatVehicle.cpp</Transaction>
+    <Transaction>2024/05/31 06:39:03.584,=C:\source\test\EMB_NMEAParse\GPGGA.h</Transaction>
+    <Transaction>2024/05/31 06:39:03.598,=C:\source\test\EMB_NMEAParse\GPGLL.h</Transaction>
+    <Transaction>2024/05/31 06:39:03.630,=C:\source\test\EMB_NMEAParse\GPGSA.h</Transaction>
+    <Transaction>2024/05/31 06:39:03.632,=C:\source\test\EMB_NMEAParse\GPGSV.h</Transaction>
+    <Transaction>2024/05/31 06:39:03.645,=C:\source\test\EMB_NMEAParse\GPRMC.h</Transaction>
+    <Transaction>2024/05/31 06:39:03.677,=C:\source\test\EMB_NMEAParse\GPTXT.h</Transaction>
+    <Transaction>2024/05/31 06:39:03.690,=C:\source\test\EMB_NMEAParse\GPVTG.h</Transaction>
+    <Transaction>2024/05/31 06:39:03.693,=C:\source\test\EMB_NMEAParse\nmea.h</Transaction>
+    <Transaction>2024/05/31 06:39:03.708,=C:\source\test\EMB_NMEAParse\NMEA_Sentence.h</Transaction>
+    <Transaction>2024/05/31 06:39:03.726,=C:\source\test\EMB_NMEAParse\parse.h</Transaction>
+    <Transaction>2024/05/31 06:39:03.740,=C:\source\test\EMB_NMEAParse\SatVehicle.h</Transaction>
+  </Transactions>
+</BorlandProject>
