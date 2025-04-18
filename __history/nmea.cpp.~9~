@@ -1,0 +1,196 @@
+
+
+#include <iostream>
+
+
+#include "nmea.h"
+const char* NMEASentenceTypeNames[] = { "NMEA_UNKNOWN","NMEA_GPGGA","NMEA_GPGLL","NMEA_GPGSA","NMEA_GPGSV","NMEA_GPRMC","NMEA_GPTXT", "NMEA_GPVTG" };
+
+
+
+#define ARRAY_LENGTH(a) (sizeof a / sizeof (a[0]))
+
+/**
+ * Check if a value is not NULL and not empty.
+ *
+ * Returns 0 if set, otherwise -1.
+ */
+static int _is_value_set(char *value)
+{
+	if (NULL == value || '\0' == *value) return -1;
+	return 0;
+}
+
+/**
+ * Crop a sentence from the type word and checksum.
+ *
+ * The type word at the beginning along with the dollar sign ($) will be
+ * removed. If there is a checksum, it will also be removed. The two end
+ * characters (usually <CR><LF>) will not be included in the new string.
+ *
+ * sentence is a validated NMEA sentence string.
+ * length is the char length of the sentence string.
+ *
+ * Returns pointer (char *) to the new string.
+ */
+char *_crop_sentence(char *sentence, size_t length)
+{
+	/* Skip type word, 7 characters (including $ and ,) */
+	sentence += NMEA_PREFIX_LENGTH + 2;
+
+	/* Null terminate before end of line/sentence, 2 characters */
+	sentence[length - 9] = '\0';
+
+	/* Remove checksum, if there is one */
+	if ('*' == sentence[length - 12]) {
+		sentence[length - 12] = '\0';
+	}
+	return sentence;
+}
+
+/**
+ * Splits a string by comma.
+ *
+ * string is the string to split, will be manipulated. Needs to be
+ *        null-terminated.
+ * values is a char pointer array that will be filled with pointers to the
+ *        splitted values in the string.
+ * max_values is the maximum number of values to be parsed.
+ *
+ * Returns the number of values found in string.
+ */
+int _split_string_by_comma(char *string, char **values, int max_values)
+{
+	int i = 0;
+
+	values[i++] = string;
+	while (i < max_values && NULL != (string = strchr(string, ','))) {
+		*string = '\0';
+		values[i++] = ++string;
+	}
+
+	return i;
+}
+
+
+nmea_t nmea_get_type(char *sentence)
+{
+	if (NULL == sentence) {
+		return NMEA_UNKNOWN;
+	}
+	
+	if ( (0 == strncmp(sentence, "$GPGGA", 6) || 0 == strncmp(sentence, "$GNGGA", 6)) {
+
+		return NMEA_GPGGA;
+	}
+	else if ((0 == strncmp(sentence, "$GPGLL", 6) || (0 == strncmp(sentence, "$GNGLL", 6)) {
+		return NMEA_GPGLL;
+	}
+	else if ((0 == strncmp(sentence, "$GPGSA", 6) || (0 == strncmp(sentence, "$GNGSA", 6)) {
+		return NMEA_GPGSA;
+	}
+	else if (0 == strncmp(sentence, "$GPGSV", 6)) {
+		return NMEA_GPGSV;
+	}
+	else if ((0 == strncmp(sentence, "$GPRMC", 6) || (0 == strncmp(sentence, "$GNRMC", 6)) {
+		return NMEA_GPRMC;
+	}
+	else if ((0 == strncmp(sentence, "$GPTXT", 6) || (0 == strncmp(sentence, "$GNTXT", 6)) {
+		return NMEA_GPTXT;
+	}
+	else if ((0 == strncmp(sentence, "$GPVTG", 6) || (0 == strncmp(sentence, "$GNVTG", 6)) {
+		return NMEA_GPVTG;
+	}
+		else return NMEA_UNKNOWN;
+
+}
+
+uint8_t nmea_get_checksum(char *sentence)
+{
+	const char *n = sentence + 1;
+	uint8_t chk = 0;
+
+	/* While current char isn't '*' or sentence ending (newline) */
+	while ('*' != *n && NMEA_END_CHAR_1 != *n && '\0' != *n) {
+		chk ^= (uint8_t) *n;
+		n++;
+	}
+
+	return chk;
+}
+
+int nmea_has_checksum(char *sentence, size_t length)
+{
+	if ('*' == sentence[length - 5]) {
+		return 0;
+	}
+
+	return -1;
+}
+
+int nmea_validate(char *sentence, size_t length, int b_check_checksum )
+{
+	const char *n;
+
+	/* should have atleast 9 characters */
+	if (9 > length) {
+		printf("FAIL in nmea_validate: too short: %s",sentence);
+		return -1;
+	}
+
+	/* should be less or equal to 82 characters */
+	if (NMEA_MAX_LENGTH < length) {
+		printf("FAIL in nmea_validate: too long %s",sentence);
+		return -1;
+	}
+
+	/* should start with $ */
+	if ('$' != *sentence) {
+		printf("FAIL in nmea_validate: doesn't start with $ %s", sentence);
+		return -1;
+	}
+
+	/* should end with \r\n, or other... */
+	if (NMEA_END_CHAR_2 != sentence[length - 1] || NMEA_END_CHAR_1 != sentence[length - 2]) {
+		printf("FAIL in nmea_validate: doesn't end with \r\n %s", sentence);
+		return -1;
+	}
+
+	/* should have a 5 letter, uppercase word */
+	n = sentence;
+	while (++n < sentence + 6) {
+		if (*n < 'A' || *n > 'Z') {
+			/* not uppercase letter */
+			printf("FAIL in nmea_validate: not uppercase letter %s", sentence);
+			return -1;
+		}
+	}
+
+	/* should have a comma after the type word */
+	if (',' != sentence[6]) {
+		printf("FAIL in nmea_validate: not should have a comma after the type word %s", sentence);
+		return -1;
+	}
+
+	/* check for checksum */
+	if (1 == b_check_checksum && 0 == nmea_has_checksum(sentence, length)) {
+		uint8_t actual_chk;
+		uint8_t expected_chk;
+		char checksum[3];
+
+		checksum[0] = sentence[length - 4];
+		checksum[1] = sentence[length - 3];
+		checksum[2] = '\0';
+		actual_chk = nmea_get_checksum(sentence);
+		expected_chk = (uint8_t) strtol(checksum, NULL, 16);
+		if (expected_chk != actual_chk) {
+			printf("FAIL in nmea_validate: checksum problem %s", sentence);
+			return -1;
+		}
+	}
+
+	return 0;
+}
+
+
+

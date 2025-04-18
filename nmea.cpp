@@ -79,25 +79,26 @@ nmea_t nmea_get_type(char *sentence)
 		return NMEA_UNKNOWN;
 	}
 	
-	if (0 == strncmp(sentence, "$GPGGA", 6)) {
+	if ( (0 == strncmp(sentence, "$GPGGA", 6)) || (0 == strncmp(sentence, "$GNGGA", 6))) {
+
 		return NMEA_GPGGA;
 	}
-	else if (0 == strncmp(sentence, "$GPGLL", 6)) {
+	else if ((0 == strncmp(sentence, "$GPGLL", 6)) || (0 == strncmp(sentence, "$GNGLL", 6))) {
 		return NMEA_GPGLL;
 	}
-	else if (0 == strncmp(sentence, "$GPGSA", 6)) {
+	else if ((0 == strncmp(sentence, "$GPGSA", 6)) || (0 == strncmp(sentence, "$GNGSA", 6))) {
 		return NMEA_GPGSA;
 	}
 	else if (0 == strncmp(sentence, "$GPGSV", 6)) {
 		return NMEA_GPGSV;
 	}
-	else if (0 == strncmp(sentence, "$GPRMC", 6)) {
+	else if ((0 == strncmp(sentence, "$GPRMC", 6)) || (0 == strncmp(sentence, "$GNRMC", 6))) {
 		return NMEA_GPRMC;
 	}
-	else if (0 == strncmp(sentence, "$GPTXT", 6)) {
+	else if ((0 == strncmp(sentence, "$GPTXT", 6)) || (0 == strncmp(sentence, "$GNTXT", 6))) {
 		return NMEA_GPTXT;
 	}
-	else if (0 == strncmp(sentence, "$GPVTG", 6)) {
+	else if ((0 == strncmp(sentence, "$GPVTG", 6)) || (0 == strncmp(sentence, "$GNVTG", 6))) {
 		return NMEA_GPVTG;
 	}
 		else return NMEA_UNKNOWN;

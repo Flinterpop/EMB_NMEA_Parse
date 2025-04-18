@@ -57,6 +57,7 @@ NMEA_Sentence *ParseNMEASentence(char* sentence)
 		case NMEA_GPGGA:
 		{
 			GPGGA* myGPGGA = new GPGGA();
+            printf("Found GPGGA\n");
 			return myGPGGA->parse(sentence, length);
 		}
 		case NMEA_GPGLL:
@@ -93,6 +94,8 @@ NMEA_Sentence *ParseNMEASentence(char* sentence)
 		}
 
 	}
+	printf("nullptr\t\n");
+
 	return nullptr;
 }
 
@@ -153,13 +156,13 @@ void TForm9::TestNMEAFile()
 			std::getline(ifs, str);
 			strcpy(buf, str.c_str());
 			strcat(buf, "\r\n");  //NMEA string must end in LF/CR
-			//if (CB_Debug->Checked) pmeF("Parsing %s", buf);
+			if (CB_Debug->Checked) pmeF("Parsing %s\n", buf);
 			NMEA_Sentence* next = ParseNMEASentence(buf);    //note when GGSVA is parsed it updates the global g_SVList
 			if (next != nullptr)
 			{
 				g_NMEA_list.push_back(next);     //push the base class pointer
 			}
-			else pme("Failed to parse sentence!\n");
+			else pme(">Failed to parse sentence!\n");
 		}
 		ifs.close();
 	}
